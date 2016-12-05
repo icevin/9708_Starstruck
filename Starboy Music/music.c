@@ -18,7 +18,16 @@
 
 //Competition Control and Duration Settings
 #pragma competitionControl(Competition)
+
+
+//GLOBAL VARIABLES
+float powerExpanderBatteryV;
+//Control variables
+int dlC, drC, armC, knockC, forwardsC, backwardsC, touchSensLC, touchSensRC, musicCtrl = 1;
+float armMultiplier, dMult = 1;
+
 #include "Vex_Competition_Includes.c"   //Main competition background code...do not modify
+#include "music.h"
 #include "Starstruck.h"
 
 //CONSTANTS
@@ -42,16 +51,10 @@ task autonomous()
 	nMotorEncoder[driveLeftBack] = 0;
 	nMotorEncoder[driveRightBack] = 0;
 	//While both of the encoders are less than the specified amount
-	drive(1480, -80);
-	drive(1200, 80);
-	turnLeft(200, 50);
-	drive(1200, -80);
 }
 
-
-task usercontrol()
-{
-
+task nonMusic() {
+	nSchedulePriority = 10;
 	//Math variables
 	int lastArmC, currArmC;
 	while(true){
@@ -63,9 +66,10 @@ task usercontrol()
 		backwardsC = vexRT[Btn7D];
 		touchSensRC = SensorValue[touchSensL];
 		touchSensLC = SensorValue[touchSensR];
+		musicCtrl = vexRT[Btn7UXmtr2];
 		if(forwardsC == 1) {
 			dMult = 1;
-		} else if(backwardsC == 1) {
+			} else if(backwardsC == 1) {
 			dMult = -1;
 		}
 
@@ -94,12 +98,12 @@ task usercontrol()
 			motor[armLBot] = 0;
 			motor[armRTop] = 0;
 			motor[armRBot] = 0;
-		} else if(abs(armC) > DEADZONE)	{
+			} else if(abs(armC) > DEADZONE)	{
 			motor[armLTop] = armC;
 			motor[armLBot] = armC;
 			motor[armRTop] = armC;
 			motor[armRBot] = armC;
-	  } else {
+			} else {
 			motor[armLTop] = 0;
 			motor[armLBot] = 0;
 			motor[armRTop] = 0;
@@ -126,4 +130,59 @@ task usercontrol()
 
 		wait1Msec(LOOPSPEED);
 	}
+
+}
+
+task music()
+{
+	startTask(nonMusic);
+	nSchedulePriority = 8;
+	unsigned int beat = 0;
+	while(true) {
+		if(musicCtrl == 1) {
+
+			if(beat <= 70) {
+				playImmediateTone(intro[beat][0],(intro[beat][1]-3));
+
+				//Defer to other tasks
+				wait1Msec(intro[beat][1] * 10);
+				} else if(beat <= 227) {
+				playImmediateTone(beforeRepeat[beat-71][0], (beforeRepeat[beat-71][1]-3));
+				wait1Msec(beforeRepeat[beat-71][1] * 10);
+				} else if(beat <= 316) {
+				playImmediateTone(chorus1[beat-228][0], (chorus1[beat-228][1]-3));
+				wait1Msec(chorus1[beat-228][1] * 10);
+				} else if(beat <= 474) {
+				if(beat == 317) {
+					playImmediateTone(0, 64.171);
+					wait1Msec(641.71);
+				}
+				playImmediateTone(beforeRepeat[beat-317][0], (beforeRepeat[beat-317][1]-3));
+				wait1Msec(beforeRepeat[beat-317][1] * 10);
+				} else if(beat <= 562) {
+				playImmediateTone(chorus2[beat-475][0], (chorus2[beat-475][1]-3));
+				wait1Msec(chorus2[beat-475][1] * 10);
+				} else if(beat <= 719) {
+				if(beat == 563) {
+					playImmediateTone(0, 64.171);
+					wait1Msec(641.71);
+				}
+				playImmediateTone(beforeRepeat[beat-563][0], (beforeRepeat[beat-563][1]-3));
+				wait1Msec(beforeRepeat[beat-563][1] * 10);
+			}
+			//Advance beat,
+
+
+			//Beat advancing and repeat
+			beat++;
+			if(beat > 719) {
+				beat = 0;
+			}
+		}	else {wait1Msec(1000);}
+	}
+}
+
+task usercontrol()
+{
+	startTask(music);
 }

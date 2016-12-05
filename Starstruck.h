@@ -3,25 +3,26 @@
 
 
 
+
 //GLOBAL VARIABLES
 float powerExpanderBatteryV;
 //Control variables
-int dlC, drC, armC, knockC, forwardsC, backwardsC;
+int dlC, drC, armC, knockC, forwardsC, backwardsC, touchSensLC, touchSensRC;
 float armMultiplier, dMult = 1;
 
 void clearEncoders() {
-	//nMotorEncoder[driveLeft1] = 0;
-	//nMotorEncoder[driveRight1] = 0;
+	//nMotorEncoder[driveLeftBack] = 0;
+	//nMotorEncoder[driveRightBack] = 0;
 }
 
 void drive(int encoderCounts, int speed)
 {
 	clearEncoders();
 	//While both of the encoders are less than the specified amount
-	while(abs(nMotorEncoder[driveRight1]) < abs(encoderCounts))
+	while(abs(nMotorEncoder[driveLeftwBack]) < abs(encoderCounts))
 	{
 		//If the two encoder values are equal
-		if(abs(nMotorEncoder[driveRight1]) == abs(nMotorEncoder[driveLeft1]))
+		if(abs(nMotorEncoder[driveRightBack]) == abs(nMotorEncoder[driveLeftBack]))
 		{
 			//Move the robot forward at the specified speed
 			motor[driveLeftBack] = speed;
@@ -30,7 +31,7 @@ void drive(int encoderCounts, int speed)
 			motor[driveRightFront] = speed;
 
 		}
-		if(abs(nMotorEncoder[driveRight1]) < abs(nMotorEncoder[driveLeft1]))
+		if(abs(nMotorEncoder[driveRightBack]) < abs(nMotorEncoder[driveLeftBack]))
 		{
 			//Move the robot forward at the specified speed
 			motor[driveRightBack] = speed;
@@ -38,7 +39,7 @@ void drive(int encoderCounts, int speed)
 			motor[driveLeftBack] = speed+10;
 			motor[driveLeftFront] = speed+10;
 		}
-		else if(abs(nMotorEncoder[driveRight1]) > abs(nMotorEncoder[driveLeft1]))
+		else if(abs(nMotorEncoder[driveRightBack]) > abs(nMotorEncoder[driveLeftBack]))
 		{
 			//Move the robot forward at the specified speed
 			motor[driveRightBack] = speed+10;
@@ -62,10 +63,10 @@ void turnLeft(int encoderCounts, int speed)
 	clearEncoders();
 	//While the absolute value of the right motor's encoder is less
 	//than the specified amount
-	while(abs(nMotorEncoder[driveLeft1]) < encoderCounts)
+	while(abs(nMotorEncoder[driveLeftBack]) < encoderCounts)
 	{
 		//If the two encoder values are equal
-		if(abs(nMotorEncoder[driveLeft1]) == abs(nMotorEncoder[driveLeft1]))
+		if(abs(nMotorEncoder[driveLeftBack]) == abs(nMotorEncoder[driveLeftBack]))
 		{
 			//Move the robot forward at the specified speed
 			motor[driveLeftBack] = -speed;
@@ -74,29 +75,29 @@ void turnLeft(int encoderCounts, int speed)
 			motor[driveRightFront] = speed;
 
 		}
-		if(abs(nMotorEncoder[driveLeft1]) < abs(nMotorEncoder[driveRight1]))
+		if(abs(nMotorEncoder[driveLeftBack]) < abs(nMotorEncoder[driveRightBack]))
 		{
 			//Move the robot forward at the specified speed
-				motor[driveLeftBack] = -(speed+10);
-			motor[driveLeftFront] = -(speed+10)9;
+			motor[driveLeftBack] = -(speed+10);
+			motor[driveLeftFront] = -(speed+10);
 			motor[driveRightBack] = speed;
 			motor[driveRightFront] = speed;
 
-		motor[driveRight1] = speed;
-			motor[driveLeft1] = -(speed+10);
+		motor[driveRightBack] = speed;
+			motor[driveLeftBack] = -(speed+10);
 
 		}
-		else if(abs(nMotorEncoder[driveLeft1]) > abs(nMotorEncoder[driveRight1]))
+		else if(abs(nMotorEncoder[driveLeftBack]) > abs(nMotorEncoder[driveRightBack]))
 		{
 			//Move the robot forward at the specified speed
-			motor[driveRight1] = speed+10;
-			motor[driveLeft1] = -speed;
+			motor[driveRightBack] = speed+10;
+			motor[driveLeftBack] = -speed;
 
 		}
 	}
 	//Stop the robot
-	motor[driveRight1] = 0;
-	motor[driveLeft1] = 0;
+	motor[driveRightBack] = 0;
+	motor[driveLeftBack] = 0;
 }
 
 //Turn the robot left for the specified encoder counts
@@ -111,34 +112,34 @@ void turnRight(int encoderCounts, int speed)
 	//than the specified amount
 
 	//Turn the robot to the right at the specified speed
-	while(abs(nMotorEncoder[driveRight1]) < encoderCounts)
+	while(abs(nMotorEncoder[driveRightBack]) < encoderCounts)
 	{
 		//If the two encoder values are equal
-		if(abs(nMotorEncoder[driveRight1]) == abs(nMotorEncoder[driveLeft1]))
+		if(abs(nMotorEncoder[driveRightBack]) == abs(nMotorEncoder[driveLeftBack]))
 		{
 			//Move the robot forward at the specified speed
-			motor[driveRight1] = -speed;
-			motor[driveLeft1] = speed;
+			motor[driveRightBack] = -speed;
+			motor[driveLeftBack] = speed;
 
 		}
-		if(abs(nMotorEncoder[driveRight1]) < abs(nMotorEncoder[driveLeft1]))
+		if(abs(nMotorEncoder[driveRightBack]) < abs(nMotorEncoder[driveLeftBack]))
 		{
 			//Move the robot forward at the specified speed
-			motor[driveRight1] = -speed;
-			motor[driveLeft1] = speed+10;
+			motor[driveRightBack] = -speed;
+			motor[driveLeftBack] = speed+10;
 
 		}
-		else if(abs(nMotorEncoder[driveRight1]) > abs(nMotorEncoder[driveLeft1]))
+		else if(abs(nMotorEncoder[driveRightBack]) > abs(nMotorEncoder[driveLeftBack]))
 		{
 			//Move the robot forward at the specified speed
-			motor[driveRight1] = -(speed+10);
-			motor[driveLeft1] = speed;
+			motor[driveRightBack] = -(speed+10);
+			motor[driveLeftBack] = speed;
 
 		}
 	}
 	//Stop the robot
-	motor[driveRight1] = 0;
-	motor[driveLeft1] = 0;
+	motor[driveRightBack] = 0;
+	motor[driveLeftBack] = 0;
 }
 
 
