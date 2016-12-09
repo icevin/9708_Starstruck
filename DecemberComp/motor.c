@@ -17,6 +17,7 @@ int forceSetMotor(int port, int power) {
 
 int reqMotor(int port, int power, speed) {
 	motorReq[port-1] = power;
+	
 }
 
 

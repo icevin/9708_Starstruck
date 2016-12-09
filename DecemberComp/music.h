@@ -522,5 +522,47 @@ unsigned float chorus2[88][2] = {  //count 317 (count - 317) - > count 404
 		{A4__, quart}, //count = 404, array pos = 87
 	};
 
+task music()
+{
+	nSchedulePriority = 8;
+	while(true) {
+		if(musicCtrl == 1) {
+
+			if(beat <= 70) {
+				playImmediateTone(intro[beat][0],(intro[beat][1]-3));
+				wait1Msec(intro[beat][1] * 10);
+			} else if(beat <= 227) {
+				playImmediateTone(beforeRepeat[beat-71][0], (beforeRepeat[beat-71][1]-3));
+				wait1Msec(beforeRepeat[beat-71][1] * 10);
+			} else if(beat <= 316) {
+				playImmediateTone(chorus1[beat-228][0], (chorus1[beat-228][1]-3));
+				wait1Msec(chorus1[beat-228][1] * 10);
+			} else if(beat <= 474) {
+				if(beat == 317) {
+					playImmediateTone(0, 64.171);
+					wait1Msec(641.71);
+				}
+				playImmediateTone(beforeRepeat[beat-318][0], (beforeRepeat[beat-318][1]-3));
+				wait1Msec(beforeRepeat[beat-318][1] * 10);
+			} else if(beat <= 562) {
+				playImmediateTone(chorus2[beat-475][0], (chorus2[beat-475][1]-3));
+				wait1Msec(chorus2[beat-475][1] * 10);
+			} else if(beat <= 719) {
+				if(beat == 563) {
+					playImmediateTone(0, 64.171);
+					wait1Msec(641.71);
+				}
+				playImmediateTone(beforeRepeat[beat-563][0], (beforeRepeat[beat-563][1]-3));
+				wait1Msec(beforeRepeat[beat-563][1] * 10);
+			}
+
+			//Beat advancing and repeat
+			beat++;
+			if(beat > 719) {
+				beat = 0;
+			}
+		}	else {wait1Msec(1000);}
+	}
+}
 
 #endif
