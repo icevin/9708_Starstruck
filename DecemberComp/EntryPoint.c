@@ -42,16 +42,18 @@
 #define joy_right_vertical "Ch2"
 #define joy_right_horizontal "Ch1"
 
-#include "Vex_Competition_Includes.c"
-#include "music.h"
-#include "StarstruckIncludes.h"
-#include "motor.c"
-
 //GLOBAL VARIABLES
 float powerExpanderBatteryV;
 //Control variables
 int dlC, drC, armC, forwardsC, backwardsC, musicCtrl;
 int armMotors;
+unsigned int beat = 0;
+
+#include "Vex_Competition_Includes.c"
+#include "music.h"
+#include "StarstruckIncludes.h"
+//#include "motor.c"
+
 
 
 
@@ -73,52 +75,73 @@ task nonMusic() {
 	nSchedulePriority = 10;
 	//Math variables
 	int lastArmC, currArmC;
-	
+
+	int mReqD1, mReqD2, mReqD3, mReqD4;
 	while(true){
-		
-		joyLV = vexRT[Ch3];
-		joyLH = vexRT[Ch4];
-		joyRV = vexRT[Ch2];
-		joyRH = vexRT[Ch1];
-		
+
+		int joyLV = vexRT[Ch3];
+		int joyLH = vexRT[Ch4];
+		int joyRV = vexRT[Ch2];
+		int joyRH = vexRT[Ch1];
+
 		armC = vexRT[Ch2Xmtr2];
 		forwardsC = vexRT[Btn7U];
 		backwardsC = vexRT[Btn7D];
 
 		musicCtrl = vexRT[Btn7UXmtr2];
 
-		
-	motor[dLeftF] = VexRT[ch3] + VexRT[ch1] + VexRT[ch4];
-	motor[dRightF] = VexRT[ch3] - VexRT[ch1] - VexRT[ch4];
-	motor[dLeftB] = VexRT[ch3] + VexRT[ch1] - VexRT[ch4];
-	motor[dRightB]= VexRT[ch3] - VexRT[ch1] + VexRT[ch4];
+	mReqD1 = vexRT[Ch3] + vexRT[Ch1] + vexRT[Ch4];
+	mReqD2 = vexRT[Ch3] - vexRT[Ch1] - vexRT[Ch4];
+	mReqD3 = vexRT[Ch3] + vexRT[Ch1] - vexRT[Ch4];
+	mReqD4 = vexRT[Ch3] - vexRT[Ch1] + vexRT[Ch4];
+
+
+	if(abs(mReqD1) > DEADZONE)
+		motor[dLeftF] = mReqD1;
+	else
+		motor[dLeftF] = 0;
+
+	if(abs(mReqD2) > DEADZONE)
+		motor[dRightF] = mReqD2;
+	else
+		motor[dRightF] = 0;
+
+	if(abs(mReqD3) > DEADZONE)
+		motor[dLeftB] = mReqD3;
+	else
+		motor[dLeftB] = 0;
+
+	if(abs(mReqD4) > DEADZONE)
+		motor[dRightB] = mReqD4;
+	else
+		motor[dRightB] = 0;
 
 		lastArmC = currArmC;
 		currArmC = armC;
-		
+
 		if(abs(armC) > DEADZONE) {
 			armMotors = armC;
 			} else {
 			armMotors = 0;
 		}
 
-		
-		
-		
-		
-		
+
+
+
+
+
 		//Set Motors
 		motor[armL1] = armMotors;
 		motor[armL2] = armMotors;
 		motor[armR1] = armMotors;
 		motor[armR2] = armMotors;
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
 		//Displays Battery Levels to VEX Remote Screen
 		powerExpanderBatteryV = SensorValue[in1]/.28;
 		clearLCDLine(0);
@@ -133,16 +156,14 @@ task nonMusic() {
 		wait1Msec(LOOPSPEED);
 	}
 }
-
-unsigned int beat = 0;
-
+/*
 task motorSlewRate() {
 
-}
+}*/
 
 task usercontrol()
 {
 	startTask(music);
 	startTask(nonMusic);
-	startTask(motorSlew);
+	//startTask(motorSlew);
 }
