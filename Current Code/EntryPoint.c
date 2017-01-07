@@ -1,15 +1,14 @@
 #pragma config(UART_Usage, UART2, uartNotUsed, baudRate4800, IOPins, None, None)
-#pragma config(Sensor, in1,    potCL,          sensorPotentiometer)
-#pragma config(Sensor, in2,    potCR,          sensorPotentiometer)
+#pragma config(Sensor, in1,    pot,            sensorPotentiometer)
 #pragma config(Sensor, dgtl6,  quadL,          sensorQuadEncoder)
 #pragma config(Sensor, dgtl8,  quadR,          sensorQuadEncoder)
 #pragma config(Motor,  port1,           clawL,         tmotorVex393_HBridge, openLoop)
 #pragma config(Motor,  port2,           dLeftF,        tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           dLeftB,        tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port4,           armL1,         tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port5,           armL2,         tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port6,           armR1,         tmotorVex393_MC29, openLoop, reversed)
-#pragma config(Motor,  port7,           armR2,         tmotorVex393_MC29, openLoop, reversed)
+#pragma config(Motor,  port4,           armL1,         tmotorVex393_MC29, openLoop, reversed)
+#pragma config(Motor,  port5,           armL2,         tmotorVex393_MC29, openLoop, reversed)
+#pragma config(Motor,  port6,           armR1,         tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port7,           armR2,         tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port8,           dRightF,       tmotorVex393_MC29, openLoop, reversed)
 #pragma config(Motor,  port9,           dRightB,       tmotorVex393_MC29, openLoop, reversed)
 #pragma config(Motor,  port10,          clawR,         tmotorVex393_HBridge, openLoop)
@@ -17,6 +16,20 @@
 
 // to turn left, motors are negative
 //to turn right, motors are positive
+
+
+/* NOTES
+
+Potentiometer key:
+Closed: ~3900
+180 Degrees: ~2660
+45 degrees (facing towards stars but not closed): ~1700
+Fully closed: ~1000, 1100
+
+
+
+*/
+
 
 
 #pragma platform(VEX)

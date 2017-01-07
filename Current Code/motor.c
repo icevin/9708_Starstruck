@@ -8,8 +8,6 @@
 int motorReq[10];
 int motorCur[10];
 
-bool motorChange = 0;
-
 int forceSetMotor(int port, int power);
 int reqMotor(int port, int power);
 int setSlew(int port, int slew);
@@ -20,18 +18,18 @@ task motorSlewControl() {
 			if(motorReq[x] == motorCur[x]) {
 				continue;
 			}
-			
+
 			if(motorCur[x] < motorReq[x]) {
 				motorCur[x] += slew;
 			} else if(motorCur[x] > motorReq[x]) {
 				motorCur[x] -= slew;
 			}
-			
+
 			forceSetMotor(x, motorCur[x]);
 			wait1Msec(LOOPSPEED+LOOPSPEED);
 		}
 	}
-}	
+}
 
 int forceSetMotor(int port, int power) {
 	motorCur[port] = power;
