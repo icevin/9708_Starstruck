@@ -146,7 +146,7 @@ void armRotationUser(int r)
 			motor[armR2] = -50;
 			wait1Msec(50);
 		}
-		if(SensorValue(armEncoder) > r+24)
+		else if(SensorValue(armEncoder) > r+24)
 	{
 			motor[armL1] = 50;
 			motor[armL2] = 50;
@@ -289,21 +289,27 @@ void auton3(){
 	motor[armR2] = 0;
 
 */
+/*
 while(SensorValue(pot) < 2500 || SensorValue(pot) > 2800)
 	{
-		if(SensorValue(pot) < 2500)
+		if(SensorValue(pot) > 2400)
 		{
 			motor[clawL] = -50;
 			motor[clawR] = -50;
 			wait1Msec(50);
 		}
-		if(SensorValue(pot) > 2800)
+
+		else if(SensorValue(pot) < 2700)
 	{
 		motor[clawL] = 50;
 			motor[clawR] = 50;
 			wait1Msec(50);
 	}
+	motor[clawL] = 0;
+motor[clawR] = 0;
 }
+motor[clawL] = 0;
+motor[clawR] = 0;
 wait1Msec(200);
 
 while(SensorValue(pot) < 2500 || SensorValue(pot) > 2800)
@@ -314,15 +320,20 @@ while(SensorValue(pot) < 2500 || SensorValue(pot) > 2800)
 			motor[clawR] = -50;
 			wait1Msec(50);
 		}
-		if(SensorValue(pot) > 2800)
+
+		else if(SensorValue(pot) > 2800)
 	{
 		motor[clawL] = 50;
 			motor[clawR] = 50;
 			wait1Msec(50);
 	}
+	motor[clawL] = 0;
+motor[clawR] = 0;
 }
 motor[clawL] = 0;
 motor[clawR] = 0;
+*/
+halfOpenClaw();
 int r = -200;
 while(SensorValue(armEncoder) < r-24 || SensorValue(armEncoder) > r+24)
 	{
@@ -333,10 +344,10 @@ while(SensorValue(armEncoder) < r-24 || SensorValue(armEncoder) > r+24)
 			motor[armL2] = -50;
 			motor[armR1] = -50;
 			motor[armR2] = -50;
-			wait1Msec(500)
+			wait1Msec(500);
 		}
 
-		if(SensorValue(armEncoder) > r+24)
+		else if(SensorValue(armEncoder) > r+24)
 	{
 			motor[armL1] = 50;
 			motor[armL2] = 50;
@@ -441,7 +452,7 @@ task nonMusic() {
 	}
 	if (overFence==1)
 	{
-		armRotationUser(-256);
+		armRotationUser(-180);
 }
 	mReqD1 = (vexRT[ch3Xmtr2]*direction + vexRT[ch1Xmtr2]*.5 + vexRT[ch4Xmtr2]*direction);
 	mReqD2 = (vexRT[ch3Xmtr2]*direction - vexRT[ch1Xmtr2]*.5 - vexRT[ch4Xmtr2]*direction);
