@@ -2,7 +2,7 @@
 #pragma config(I2C_Usage, I2C1, i2cSensors)
 #pragma config(Sensor, in1,    pot,            sensorPotentiometer)
 #pragma config(Sensor, dgtl1,  armEncoder,     sensorQuadEncoder)
-#pragma config(Sensor, dgtl5,  armButton,      sensorTouch)
+#pragma config(Sensor, dgtl5,  armButton,      sensorTouCh)
 #pragma config(Sensor, I2C_1,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_2,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_3,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
@@ -55,10 +55,10 @@ Fully closed: ~1000, 1100
 #define m_dRightB 9
 #define m_clawR 10
 
-#define joy_left_vertical "ch3Xmtr2"
-#define joy_left_horizontal "ch4Xmtr2"
-#define joy_right_vertical "ch2Xmtr2"
-#define joy_right_horizontal "ch1Xmtr2"
+#define joy_left_vertical "Ch3Xmtr2"
+#define joy_left_horizontal "Ch4Xmtr2"
+#define joy_right_vertical "Ch2Xmtr2"
+#define joy_right_horizontal "Ch1Xmtr2"
 
 //GLOBAL VARIABLES
 float powerExpanderBatteryV;
@@ -73,7 +73,7 @@ unsigned int beat = 0;
 
 
 #include "StarstruckIncludes.h"
-//#include "motor.c"
+#include "motor.c"
 
 
 
@@ -178,7 +178,7 @@ void armRotation(int r)
 			motor[armL2] = -50;
 			motor[armR1] = -50;
 			motor[armR2] = -50;
-			wait1Msec(500)
+			wait1Msec(500);
 		}
 
 		if(SensorValue(armEncoder) > r+24)
@@ -425,17 +425,17 @@ task nonMusic() {
 	int mReqD1, mReqD2, mReqD3, mReqD4, clawValue;
 	while(true){
 
-		//int joyLV = vexRT[ch3Xmtr2];
-		//int joyLH = vexRT[ch4Xmtr2];
-		//int joyRV = vexRT[ch2Xmtr2];
-		//int joyRH = vexRT[ch1Xmtr2];
+		//int joyLV = vexRT[Ch3Xmtr2];
+		//int joyLH = vexRT[Ch4Xmtr2];
+		//int joyRV = vexRT[Ch2Xmtr2];
+		//int joyRH = vexRT[Ch1Xmtr2];
 
-		armC = vexRT[ch2Xmtr2];
+		armC = vexRT[Ch2Xmtr2];
 		openSlow = vexRT[Btn6UXmtr2] * 80;
 		closeSlow = vexRT[Btn6DXmtr2] * -80;
 //		openFast = vexRT[Btn5U] * 120;
 //		closeFast = vexRT[Btn5D] * -120;
-		clawC = vexRT[ch1Xmtr2];
+		clawC = vexRT[Ch1Xmtr2];
 		armUp = vexRT[Btn5UXmtr2];
 		armDown = vexRT[Btn5DXmtr2];
 		ChangeControl = vexRT(Btn7LXmtr2);
@@ -452,12 +452,12 @@ task nonMusic() {
 	}
 	if (overFence==1)
 	{
-		armRotationUser(-180);
+		//armRotationUser(-180);
 }
-	mReqD1 = (vexRT[ch3Xmtr2]*direction + vexRT[ch1Xmtr2]*.5 + vexRT[ch4Xmtr2]*direction);
-	mReqD2 = (vexRT[ch3Xmtr2]*direction - vexRT[ch1Xmtr2]*.5 - vexRT[ch4Xmtr2]*direction);
-	mReqD3 = (vexRT[ch3Xmtr2]*direction + vexRT[ch1Xmtr2]*.5 - vexRT[ch4Xmtr2]*direction);
-	mReqD4 = (vexRT[ch3Xmtr2]*direction - vexRT[ch1Xmtr2]*.5 + vexRT[ch4Xmtr2]*direction);
+	mReqD1 = (vexRT[Ch3Xmtr2]*direction + vexRT[Ch1Xmtr2]*.5 + vexRT[Ch4Xmtr2]*direction);
+	mReqD2 = (vexRT[Ch3Xmtr2]*direction - vexRT[Ch1Xmtr2]*.5 - vexRT[Ch4Xmtr2]*direction);
+	mReqD3 = (vexRT[Ch3Xmtr2]*direction + vexRT[Ch1Xmtr2]*.5 - vexRT[Ch4Xmtr2]*direction);
+	mReqD4 = (vexRT[Ch3Xmtr2]*direction - vexRT[Ch1Xmtr2]*.5 + vexRT[Ch4Xmtr2]*direction);
 
 	if(abs(mReqD1) > DEADZONE)
 		motor[dLeftF] = mReqD1;
@@ -486,10 +486,10 @@ task nonMusic() {
 		direction*=-1;
 		wait1Msec(200);
 	}
-	mReqD1 = (vexRT[ch3Xmtr2] + vexRT[ch1Xmtr2] + vexRT[ch4Xmtr2]);
-	mReqD2 = (vexRT[ch3Xmtr2] - vexRT[ch1Xmtr2] - vexRT[ch4Xmtr2]);
-	mReqD3 = (vexRT[ch3Xmtr2] + vexRT[ch1Xmtr2] - vexRT[ch4Xmtr2]);
-	mReqD4 = (vexRT[ch3Xmtr2] - vexRT[ch1Xmtr2] + vexRT[ch4Xmtr2]);
+	mReqD1 = (vexRT[Ch3Xmtr2] + vexRT[Ch1Xmtr2] + vexRT[Ch4Xmtr2]);
+	mReqD2 = (vexRT[Ch3Xmtr2] - vexRT[Ch1Xmtr2] - vexRT[Ch4Xmtr2]);
+	mReqD3 = (vexRT[Ch3Xmtr2] + vexRT[Ch1Xmtr2] - vexRT[Ch4Xmtr2]);
+	mReqD4 = (vexRT[Ch3Xmtr2] - vexRT[Ch1Xmtr2] + vexRT[Ch4Xmtr2]);
 
 	if(abs(mReqD1) > DEADZONE)
 		motor[dLeftF] = mReqD1 * direction;
@@ -522,12 +522,12 @@ task nonMusic() {
 
 		if(armUp==1)
 	{
-		armMotors=80;
+		armMotors=120;
 	}
 
 		else if((armDown==1))
 	{
-		armMotors=-80;
+		armMotors=-120;
 	}
 		else
 	{
@@ -541,11 +541,16 @@ task nonMusic() {
 		motor[clawR] = clawValue;
 
 		//Set Motors
+		reqMotor(4, armMotors);
+		reqMotor(5, armMotors);
+		reqMotor(6, armMotors);
+		reqMotor(7, armMotors);
+		/*
 		motor[armL1] = armMotors;
 		motor[armL2] = armMotors;
 		motor[armR1] = armMotors;
 		motor[armR2] = armMotors;
-
+		*/
 
 
 
@@ -590,5 +595,5 @@ task usercontrol()
 {
 	//startTask(music);
 	startTask(nonMusic);
-	//startTask(motorSlew);
+	startTask(motorSlewControl);
 }
