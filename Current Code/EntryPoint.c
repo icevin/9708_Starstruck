@@ -395,18 +395,18 @@ void kevAuton() {
 	motor[dRightF] = -90;
 	motor[dLeftB] = -90;
 	motor[dRightB] = -90;
-	wait1Msec(1000);
+	wait1Msec(1200);
 
 	motor[dLeftF] = 0;
 	motor[dRightF] = 0;
 	motor[dLeftB] = 0;
 	motor[dRightB] = 0;
 
-	motor[armL1] = 100;
-	motor[armL2] = 100;
-	motor[armR1] = 100;
-	motor[armR2] = 100;
-	wait1Msec(1200);
+	motor[armL1] = 110;
+	motor[armL2] = 110;
+	motor[armR1] = 110;
+	motor[armR2] = 110;
+	wait1Msec(1300);
 	motor[clawL] = -90;
 	motor[clawR] = -90;
 	wait1Msec(300);
