@@ -431,8 +431,8 @@ task nonMusic() {
 		//int joyRH = vexRT[Ch1Xmtr2];
 
 		armC = vexRT[Ch2Xmtr2];
-		openSlow = vexRT[Btn6UXmtr2] * 80;
-		closeSlow = vexRT[Btn6DXmtr2] * -80;
+		openSlow = vexRT[Btn6UXmtr2] * 120;
+		closeSlow = vexRT[Btn6DXmtr2] * -120;
 //		openFast = vexRT[Btn5U] * 120;
 //		closeFast = vexRT[Btn5D] * -120;
 		clawC = vexRT[Ch1Xmtr2];

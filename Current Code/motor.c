@@ -8,51 +8,45 @@
 #define slew 10
 
 
-int motorReq[10];
-int motorCur[10];
+int armReq;
+int armCur;
 
-void forceSetMotor(int port, int power);
-void reqMotor(int port, int power);
+void reqArm(int port, int power);
+void setArm(int armPower);
 
-task motorSlewControl() {
-	int deltaP = 0, diff = 0;
-
+task armSlewControl() {
+	int diff = 0;
 	while(true) {
-		for(int x = 0; x<10; x++) {
-			diff = motorReq[x] - motorCur[x];
-			if(diff == 0) {
-				continue;
+			diff = armReq - armCur;
+
+			if(armCur < armReq) {
+				armCur += (0.4*abs(diff));
+			} else if(armCur > armReq) {
+				armCur -= (0.4*abs(diff));
 			}
 
-
-
-			if(motorCur[x] < motorReq[x]) {
-				motorCur[x] += (0.6*abs(diff));
-			} else if(motorCur[x] > motorReq[x]) {
-				motorCur[x] -= (0.6*abs(diff));
+			if(motorReq == 0) {
+				setArm(0);
+			} else if(abs(power) < MOTOR_MAX_VALUE) {
+				if(armCur > 90) {
+					setArm(120);
+				} else {
+					setArm(armCur);
+				}
 			}
-
-			forceSetMotor(x, motorCur[x]);
-
-		}
-		wait1Msec(LOOPSPEED*3);
+			wait1Msec(LOOPSPEED*3);
 	}
 }
 
-void forceSetMotor(int port, int power) {
-	if(motorReq[port] == 0) {
-		motor[port+1] = 0;
-	} else if(abs(power) < MOTOR_MAX_VALUE) {
-		if(power > 90) {
-			motor[port+1] = 120;
-		} else {
-			motor[port+1] = power;
-		}
-	}
+void setArm(int armPower) {
+	motor[armL1] = armPower;
+	motor[armL2] = armPower;
+	motor[armR1] = armPower;
+	motor[armR2] = armPower;
 }
 
-void reqMotor(int port, int power) {
-	motorReq[port-1] = power;
+void reqArm(int power) {
+	armReq = power;
 }
 
 /*
