@@ -41,7 +41,6 @@ Fully closed: ~1000, 1100
 
 //Competition Control and Duration Settings
 #pragma competitionControl(Competition)
-
 #define LOOPSPEED 50 //Time between user control loops in milliseconds - time alloted to other tasks while usercontrol is idle
 #define DEADZONE 30 //Deadzone for joystick control
 #define m_clawL 1
@@ -55,10 +54,29 @@ Fully closed: ~1000, 1100
 #define m_dRightB 9
 #define m_clawR 10
 
+
+//TICKS PER REVOLUTION (ENCODER)
+#define TURBOM          261.333
+#define SPEEDM          392
+#define TORQUM          627.2
+#define QUAD          360.0
+
 #define joy_left_vertical "Ch3Xmtr2"
 #define joy_left_horizontal "Ch4Xmtr2"
 #define joy_right_vertical "Ch2Xmtr2"
 #define joy_right_horizontal "Ch1Xmtr2"
+
+#define ROTATION_REDUCTION 0.75
+
+#define PID_MAX 120
+#define PID_MIN -120
+#define PID_INTEGRAL_LIMIT 40
+#define PID_POLL_RATE 100 //Milliseconds between PID controller updates
+
+#define CLAW_FULL_CLOSED 1100
+#define CLAW_HALF_CLOSED 1700
+#define CLAW_180 2660
+#define CLAW-STOWED 3800
 
 //GLOBAL VARIABLES
 float powerExpanderBatteryV;
@@ -98,15 +116,15 @@ void halfOpenClaw()
 			wait1Msec(50);
 		}
 		if(SensorValue(pot) > 2800)
-	{
-		motor[clawL] = 50;
+		{
+			motor[clawL] = 50;
 			motor[clawR] = 50;
 			wait1Msec(50);
+		}
 	}
-}
-wait1Msec(200);
+	wait1Msec(200);
 
-while(SensorValue(pot) < 2500 || SensorValue(pot) > 2800)
+	while(SensorValue(pot) < 2500 || SensorValue(pot) > 2800)
 	{
 		if(SensorValue(pot) < 2500)
 		{
@@ -115,20 +133,22 @@ while(SensorValue(pot) < 2500 || SensorValue(pot) > 2800)
 			wait1Msec(50);
 		}
 		if(SensorValue(pot) > 2800)
-	{
-		motor[clawL] = 50;
+		{
+			motor[clawL] = 50;
 			motor[clawR] = 50;
 			wait1Msec(50);
+		}
 	}
-}
+		motor[clawL] = 0;
+		motor[clawR] = 0;
 }
 
 /*
-	while(SensorValue(pot)<2660)
-	{
-		motorclawL=-50;
-		wait1MSec(50);
-		if (Sensor
+while(SensorValue(pot)<2660)
+{
+motorclawL=-50;
+wait1MSec(50);
+if (Sensor
 }
 */
 
@@ -147,23 +167,23 @@ void armRotationUser(int r)
 			wait1Msec(50);
 		}
 		else if(SensorValue(armEncoder) > r+24)
-	{
+		{
 			motor[armL1] = 50;
 			motor[armL2] = 50;
 			motor[armR1] = 50;
 			motor[armR2] = 50;
 
 			wait1Msec(50);
-	}
+		}
 		if (counter>=r-40)
-	{
-		motor[clawR] = 20;
-		motor[clawL]=20;
-		wait1Msec(50);
-}
-	counter+=1;
+		{
+			motor[clawR] = 20;
+			motor[clawL]=20;
+			wait1Msec(50);
+		}
+		counter+=1;
 
-}
+	}
 }
 
 void armRotation(int r)
@@ -182,17 +202,17 @@ void armRotation(int r)
 		}
 
 		if(SensorValue(armEncoder) > r+24)
-	{
+		{
 			motor[armL1] = 50;
 			motor[armL2] = 50;
 			motor[armR1] = 50;
 			motor[armR2] = 50;
 
 			wait1Msec(500);
-	}
-	counter+=1;
+		}
+		counter+=1;
 
-}
+	}
 }
 
 void auton1() {
@@ -249,22 +269,22 @@ void auton1() {
 /*
 void auton2() {
 
-	motor[dLeftB] = 70;
-	motor[dRightB] = 70;
-	motor[dLeftF] = 70;
-	motor[dRightF] = 70;
-	wait1Msec(3000);
-	motor[dLeftB] = 0;
-	motor[dRightB] = 0;
-	motor[dLeftF] = 0;
-	motor[dRightF] = 0;
+motor[dLeftB] = 70;
+motor[dRightB] = 70;
+motor[dLeftF] = 70;
+motor[dRightF] = 70;
+wait1Msec(3000);
+motor[dLeftB] = 0;
+motor[dRightB] = 0;
+motor[dLeftF] = 0;
+motor[dRightF] = 0;
 }
 */
 
 
 
 void auton3(){
-/*
+	/*
 	//halfOpenClaw();
 	motor[clawL] = 0;
 	motor[clawR] = 0;
@@ -288,31 +308,8 @@ void auton3(){
 	motor[armR1] = 0;
 	motor[armR2] = 0;
 
-*/
-/*
-while(SensorValue(pot) < 2500 || SensorValue(pot) > 2800)
-	{
-		if(SensorValue(pot) > 2400)
-		{
-			motor[clawL] = -50;
-			motor[clawR] = -50;
-			wait1Msec(50);
-		}
-
-		else if(SensorValue(pot) < 2700)
-	{
-		motor[clawL] = 50;
-			motor[clawR] = 50;
-			wait1Msec(50);
-	}
-	motor[clawL] = 0;
-motor[clawR] = 0;
-}
-motor[clawL] = 0;
-motor[clawR] = 0;
-wait1Msec(200);
-
-while(SensorValue(pot) < 2500 || SensorValue(pot) > 2800)
+	*/
+	while(SensorValue(pot) < 2500 || SensorValue(pot) > 2800)
 	{
 		if(SensorValue(pot) < 2500)
 		{
@@ -320,109 +317,122 @@ while(SensorValue(pot) < 2500 || SensorValue(pot) > 2800)
 			motor[clawR] = -50;
 			wait1Msec(50);
 		}
-
-		else if(SensorValue(pot) > 2800)
-	{
-		motor[clawL] = 50;
+		if(SensorValue(pot) > 2800)
+		{
+			motor[clawL] = 50;
 			motor[clawR] = 50;
 			wait1Msec(50);
+		}
+	}
+	wait1Msec(200);
+
+	while(SensorValue(pot) < 2500 || SensorValue(pot) > 2800)
+	{
+		if(SensorValue(pot) < 2500)
+		{
+			motor[clawL] = -50;
+			motor[clawR] = -50;
+			wait1Msec(50);
+		}
+		if(SensorValue(pot) > 2800)
+		{
+			motor[clawL] = 50;
+			motor[clawR] = 50;
+			wait1Msec(50);
+		}
 	}
 	motor[clawL] = 0;
-motor[clawR] = 0;
-}
-motor[clawL] = 0;
-motor[clawR] = 0;
-*/
-halfOpenClaw();
-int r = -200;
-while(SensorValue(armEncoder) < r-24 || SensorValue(armEncoder) > r+24)
-	{
+	motor[clawR] = 0;
 
-		if(SensorValue(armEncoder) < r-24)
-		{
-			motor[armL1] = -50;
-			motor[armL2] = -50;
-			motor[armR1] = -50;
-			motor[armR2] = -50;
-			wait1Msec(500);
-		}
 
-		else if(SensorValue(armEncoder) > r+24)
-	{
-			motor[armL1] = 50;
-			motor[armL2] = 50;
-			motor[armR1] = 50;
-			motor[armR2] = 50;
-
-			wait1Msec(500);
-	}
-	wait1Msec(1000);
-	motor[armL1] = 0;
-	motor[armL2] = 0;
-	motor[armR1] = 0;
-	motor[armR2] = 0;
-
-	motor[dLeftB] = -80;
+	motor[dLeftB] = 80;
 	motor[dRightB] = -80;
-	motor[dLeftF] = -80;
+	motor[dLeftF] = 80;
 	motor[dRightF] = -80;
 	wait1Msec(2000);
 
 
-
 	motor[dLeftB] = 0;
 	motor[dRightB] = 0;
 	motor[dLeftF] = 0;
 	motor[dRightF] = 0;
 
-}}
+}
 
-task autonomous()
-{
-	/*
-	motor[dLeftB] = 127;
-	motor[dRightB] = 127;
-	motor[dLeftF] = 127;
-	motor[dRightF] = 127;
-	wait1Msec(4000);
-	motor[dLeftB] = -127;
-	motor[dRightB] = -50;
-	motor[dLeftF] = -127;
-	motor[dRightF] = -50;
-	wait1Msec(1000);
-	motor[dLeftB] = 0;
-	motor[dRightB] = 0;
-	motor[dLeftF] = 0;
-	motor[dRightF] = 0;
-	*/
-/*
-	motor[dLeftB] = 50;
-	motor[dRightB] = -50;
-	motor[dLeftF] = 50;
-	motor[dRightF] = -50;
-	wait1Msec(5000);
+
+int armOpenPoint = -105;
+
+void kevAuton() {
 	halfOpenClaw();
-	armRotation(-256);
-
-	motor[dLeftB] = 0;
-	motor[dRightB] = 0;
+	motor[dLeftF] = 75;
+	motor[dRightF] = 120;
+	motor[dLeftB] = 120;
+	motor[dRightB] = 75;
+	wait1Msec(1500);
 	motor[dLeftF] = 0;
 	motor[dRightF] = 0;
-	motor[clawL] = 0;
-	motor[clawR] = 0;
+	motor[dLeftB] = 0;
+	motor[dRightB] = 0;
+	//close claw function
+
+	motor[clawL] = 90;
+	motor[clawL] = 90;
+	wait1Msec(1500);
+	motor[clawL] = 50;
+	motor[clawR] = 50;
+
+	motor[dLeftF] = -50;
+	motor[dRightF] = 90;
+	motor[dLeftB] = -90;
+	motor[dRightB] = 50;
+	wait1Msec(1000);
+	motor[dLeftF] = 0;
+	motor[dRightF] = 0;
+	motor[dLeftB] = 0;
+	motor[dRightB] = 0;
+
+	motor[dLeftF] = -90;
+	motor[dRightF] = -90;
+	motor[dLeftB] = -90;
+	motor[dRightB] = -90;
+	wait1Msec(1000);
+
+	motor[dLeftF] = 0;
+	motor[dRightF] = 0;
+	motor[dLeftB] = 0;
+	motor[dRightB] = 0;
+
+	motor[armL1] = 100;
+	motor[armL2] = 100;
+	motor[armR1] = 100;
+	motor[armR2] = 100;
+	wait1Msec(1200);
+	motor[clawL] = -90;
+	motor[clawR] = -90;
+	wait1Msec(300);
 	motor[armL1] = 0;
 	motor[armL2] = 0;
 	motor[armR1] = 0;
 	motor[armR2] = 0;
-	*/
-auton3();
+	motor[clawL] = 0;
+	motor[clawR] = 0
+
 }
 
+task autonomous()
+{
+	kevAuton();
+
+
+}
+
+
+int forwardVector, horizontalVector, rotationVector;
 task nonMusic() {
 	nSchedulePriority = 10;
 	//Math variables
 
-	int mReqD1, mReqD2, mReqD3, mReqD4, clawValue;
+	int mReqLF, mReqRF, mReqLB, mReqRB, clawValue;
 	while(true){
 
 		//int joyLV = vexRT[Ch3Xmtr2];
@@ -433,106 +443,113 @@ task nonMusic() {
 		armC = vexRT[Ch2Xmtr2];
 		openSlow = vexRT[Btn6UXmtr2] * 120;
 		closeSlow = vexRT[Btn6DXmtr2] * -120;
-//		openFast = vexRT[Btn5U] * 120;
-//		closeFast = vexRT[Btn5D] * -120;
+		//		openFast = vexRT[Btn5U] * 120;
+		//		closeFast = vexRT[Btn5D] * -120;
 		clawC = vexRT[Ch1Xmtr2];
 		armUp = vexRT[Btn5UXmtr2];
 		armDown = vexRT[Btn5DXmtr2];
 		ChangeControl = vexRT(Btn7LXmtr2);
-		overFence = vexRT(Btn8LXmtr2);
+		//overFence = vexRT(Btn8LXmtr2);
 		//rotateRight = vexRT[Btn5U];
 		//rotateLeft = vexRT[Btn5D];
 
 		//musicCtrl = vexRT[Btn7UXmtr2];
 
 		if(ChangeControl==1)
-	{
+		{
+			direction*=-1;
+			wait1Msec(200);
+		}
+		if (overFence==1)
+		{
+			//armRotationUser(-180);
+		}
+
+
+		forwardVector = vexRT[Ch3Xmtr2];
+		horizontalVector = vexRT[Ch4Xmtr2];
+		rotationVector = vexRT[Ch1Xmtr2] * 0.5;
+
+		mReqLF = forwardVector + rotationVector + horizontalVector;
+		mReqRF = forwardVector - rotationVector - horizontalVector;
+		mReqLB = forwardVector + rotationVector - horizontalVector;
+		mReqRB = forwardVector - rotationVector + horizontalVector;
+
+		if(abs(mReqLF) > DEADZONE)
+			motor[dLeftF] = mReqLF;
+		else
+			motor[dLeftF] = 0;
+
+		if(abs(mReqRF) > DEADZONE)
+			motor[dRightF] = mReqRF;
+		else
+			motor[dRightF] = 0;
+
+		if(abs(mReqLB) > DEADZONE)
+			motor[dLeftB] = mReqLB;
+		else
+			motor[dLeftB] = 0;
+
+		if(abs(mReqRB) > DEADZONE)
+			motor[dRightB] = mReqRB;
+		else
+			motor[dRightB] = 0;
+
+
+
+		/*
+		if(ChangeControl==1)
+		{
 		direction*=-1;
 		wait1Msec(200);
-	}
-	if (overFence==1)
-	{
-		//armRotationUser(-180);
-}
-	mReqD1 = (vexRT[Ch3Xmtr2]*direction + vexRT[Ch1Xmtr2]*.5 + vexRT[Ch4Xmtr2]*direction);
-	mReqD2 = (vexRT[Ch3Xmtr2]*direction - vexRT[Ch1Xmtr2]*.5 - vexRT[Ch4Xmtr2]*direction);
-	mReqD3 = (vexRT[Ch3Xmtr2]*direction + vexRT[Ch1Xmtr2]*.5 - vexRT[Ch4Xmtr2]*direction);
-	mReqD4 = (vexRT[Ch3Xmtr2]*direction - vexRT[Ch1Xmtr2]*.5 + vexRT[Ch4Xmtr2]*direction);
+		}
+		mReqD1 = (vexRT[Ch3Xmtr2] + vexRT[Ch1Xmtr2] + vexRT[Ch4Xmtr2]);
+		mReqD2 = (vexRT[Ch3Xmtr2] - vexRT[Ch1Xmtr2] - vexRT[Ch4Xmtr2]);
+		mReqD3 = (vexRT[Ch3Xmtr2] + vexRT[Ch1Xmtr2] - vexRT[Ch4Xmtr2]);
+		mReqD4 = (vexRT[Ch3Xmtr2] - vexRT[Ch1Xmtr2] + vexRT[Ch4Xmtr2]);
 
-	if(abs(mReqD1) > DEADZONE)
-		motor[dLeftF] = mReqD1;
-	else
-		motor[dLeftF] = 0;
-
-	if(abs(mReqD2) > DEADZONE)
-		motor[dRightF] = mReqD2;
-	else
-		motor[dRightF] = 0;
-
-	if(abs(mReqD3) > DEADZONE)
-		motor[dLeftB] = mReqD3 ;
-	else
-		motor[dLeftB] = 0;
-
-	if(abs(mReqD4) > DEADZONE)
-		motor[dRightB] = mReqD4;
-	else
-		motor[dRightB] = 0;
-
-
-	/*
-			if(ChangeControl==1)
-	{
-		direction*=-1;
-		wait1Msec(200);
-	}
-	mReqD1 = (vexRT[Ch3Xmtr2] + vexRT[Ch1Xmtr2] + vexRT[Ch4Xmtr2]);
-	mReqD2 = (vexRT[Ch3Xmtr2] - vexRT[Ch1Xmtr2] - vexRT[Ch4Xmtr2]);
-	mReqD3 = (vexRT[Ch3Xmtr2] + vexRT[Ch1Xmtr2] - vexRT[Ch4Xmtr2]);
-	mReqD4 = (vexRT[Ch3Xmtr2] - vexRT[Ch1Xmtr2] + vexRT[Ch4Xmtr2]);
-
-	if(abs(mReqD1) > DEADZONE)
+		if(abs(mReqD1) > DEADZONE)
 		motor[dLeftF] = mReqD1 * direction;
-	else
+		else
 		motor[dLeftF] = 0;
 
-	if(abs(mReqD2) > DEADZONE)
+		if(abs(mReqD2) > DEADZONE)
 		motor[dRightF] = mReqD2 * direction;
-	else
+		else
 		motor[dRightF] = 0;
 
-	if(abs(mReqD3) > DEADZONE)
+		if(abs(mReqD3) > DEADZONE)
 		motor[dLeftB] = mReqD3 * direction ;
-	else
+		else
 		motor[dLeftB] = 0;
 
-	if(abs(mReqD4) > DEADZONE)
+		if(abs(mReqD4) > DEADZONE)
 		motor[dRightB] = mReqD4 * direction;
-	else
+		else
 		motor[dRightB] = 0;
-	*/
+		*/
 		if(SensorValue(armButton) == 1) {
 			SensorValue(armEncoder) = 0;
 		}
-	//	if((abs(armC) > DEADZONE)&& (SensorValue(armButton) == 0 || armC > 0)) {
+		//	if((abs(armC) > DEADZONE)&& (SensorValue(armButton) == 0 || armC > 0)) {
 		//	armMotors =armC;
 		//} else {
 		//	armMotors = 0;
 		//}
 
 		if(armUp==1)
-	{
-		armMotors=120;
-	}
+		{
+			armMotors=120;
+		}
 
 		else if((armDown==1))
-	{
-		armMotors=-120;
-	}
+		{
+			armMotors=-120;
+		}
 		else
-	{
-		armMotors=0;
-	}
+		{
+			armMotors=0;
+		}
 
 
 
@@ -540,11 +557,28 @@ task nonMusic() {
 		motor[clawL] = clawValue;
 		motor[clawR] = clawValue;
 
+		/*
+		if(vexRT[Btn6UXmtr2] == 1) {
+		clawState = 1;
+		} else if(vexRT[Btn6DXmtr2] == 1) {
+		clawState = -1;
+		} else {
+		clawState = 0;
+		}
+
+		if(clawState == 1) {
+		clawReq = CLAW_FULL_CLOSED;
+		} else if(clawState == -1) {
+		clawReq = CLAW_180;
+		} else if(clawState == 0) {
+		clawReq = SensorValue(pot);
+		} */
+
+
+
+
 		//Set Motors
-		reqMotor(4, armMotors);
-		reqMotor(5, armMotors);
-		reqMotor(6, armMotors);
-		reqMotor(7, armMotors);
+		reqArm(armMotors);
 		/*
 		motor[armL1] = armMotors;
 		motor[armL2] = armMotors;
@@ -568,9 +602,9 @@ task nonMusic() {
 		//if(vexRT[Btn8UXmtr2] == 1) {
 		//	auton1();
 		//}
-/*
+		/*
 		if(vexRT[Btn8DXmtr2] == 1) {
-			auton2();
+		auton2();
 		}
 		*/
 		if(vexRT[Btn7UXmtr2] == 1)
@@ -578,11 +612,15 @@ task nonMusic() {
 			halfOpenClaw();
 		}
 
+
 		datalogDataGroupStart();
-		datalogAddValue(0, mReqD1);
-		datalogAddValue(1, mReqD2);
-		datalogAddValue(2, mReqD3);
-		datalogAddValue(3, mReqD4);
+		datalogAddValue(0, armMotors);
+		datalogAddValue(1, clawValue);
+
+		datalogAddValue(2, mReqLF);
+		datalogAddValue(3, mReqRF);
+		datalogAddValue(4, mReqLB);
+		datalogAddValue(5, mReqRB);
 		datalogDataGroupEnd();
 
 		wait1Msec(LOOPSPEED);
@@ -595,5 +633,5 @@ task usercontrol()
 {
 	//startTask(music);
 	startTask(nonMusic);
-	startTask(motorSlewControl);
+	startTask(armSlewControl);
 }

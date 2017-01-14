@@ -11,7 +11,6 @@
 int armReq;
 int armCur;
 
-void reqArm(int port, int power);
 void setArm(int armPower);
 
 task armSlewControl() {
@@ -25,9 +24,9 @@ task armSlewControl() {
 				armCur -= (0.4*abs(diff));
 			}
 
-			if(motorReq == 0) {
+			if(armReq == 0) {
 				setArm(0);
-			} else if(abs(power) < MOTOR_MAX_VALUE) {
+			} else if(abs(armCur) < MOTOR_MAX_VALUE) {
 				if(armCur > 90) {
 					setArm(120);
 				} else {
@@ -49,92 +48,56 @@ void reqArm(int power) {
 	armReq = power;
 }
 
-/*
-task pidController()
-{
-	startTask(music, 4);
-	float pidErrorL;
-	float pidLastErrorL;
-	float pidIntegralL;
-	float pidDerivativeL;
+int clawReq = 0, clawState = 0;
 
-	float pidErrorR;
-	float pidLastErrorR;
-	float pidIntegralR;
-	float pidDerivativeR;
+task clawControl() {
+	//PID VARIABLES
+	float pid_Kp = 0.01;
+	float pid_Ki = 0.0;
+	float pid_Kd = 0.0;
 
-	pidLastErrorL = 0;
-	pidIntegralL = 0;
+	float pidError;
+	float pidLastError;
+	float pidIntegral;
+	float pidDerivative;
 
-	pidLastErrorR = 0;
-	pidIntegralR = 0;
+	float pidDrive;
+	int clawPot;
+	pidLastError = 0;
+	pidIntegral = 0;
 
 	while (true)
 	{
-		if(flyStartup == 1 && (flyVelocityR>requestedShooterSpeed))
-			flyStartup = 0;
-		else if(flyStartup==0)
-			pidSelect();
+		clawPot = SensorValue(pot);
+		pidError = clawPot - clawReq;
 
-		pidErrorL = requestedShooterSpeed-flyVelocityL;
-
-		if(pid_Ki!=0)
-		{
-			if(fabs(pidErrorL) < PID_INTEGRAL_LIMIT)
-				pidIntegralL = pidIntegralL + pidErrorL;
+		if(pid_Ki!=0) {
+			if(fabs(pidError) < PID_INTEGRAL_LIMIT)
+				pidIntegral = pidIntegral + pidError;
 			else
-				pidIntegralL = 0;
+				pidIntegral = 0;
+		} else {
+			pidIntegral = 0;
 		}
-		else
-			pidIntegralL = 0;
-		if(pidErrorL !=0)
-		{
-			pidDerivativeL = pidErrorL - pidLastErrorL;
-			pidLastErrorL = pidErrorL;
+		if(pidError !=0) {
+			pidDerivative = pidError - pidLastError;
+			pidLastError = pidError;
+		} else {
+			pidDerivative = 0;
 		}
-		else
-		{
-			pidDerivativeL = 0;
-		}
-		if(pidErrorL < 4.0)
-		{
-			pidIntegralL = 0;
-		}
-		pidDriveL+= (pid_Kp*pidErrorL) + (pid_Ki*pidIntegralL) + (pid_Kd * pidDerivativeL);
-
-		if(pidDriveL > PID_DRIVE_MAX)
-			pidDriveL = PID_DRIVE_MAX;
-		if(pidDriveL < PID_DRIVE_MIN)
-			pidDriveL = PID_DRIVE_MIN;
-
-} */
+		if(pidError < 40.0)
+			pidIntegral = 0;
 
 
+		pidDrive = (pid_Kp*pidError) + (pid_Ki*pidIntegral) + (pid_Kd * pidDerivative);
 
+		if(pidDrive > PID_MAX)
+			pidDrive = PID_MAX;
+		if(pidDrive < PID_MIN)
+			pidDrive = PID_MIN;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		wait1Msec(100);
+	}
+}
 
 #endif
