@@ -1,6 +1,14 @@
 #ifndef FUNCTIONS
 #define FUNCTIONS
 
+#define Ka 0.5
+
+
+void rotate(float angle, int power);
+float getAngle(const float Ka);
+int checkAngle(int target);
+int inRange(int value, int min, int max);
+int notInRange(int value, int min, int max);
 //MOVEMENT FUNCTIONS
 
 const unsigned int linearizeSpeed[128] =
@@ -22,6 +30,66 @@ const unsigned int linearizeSpeed[128] =
 
 
 
+void rotate(float angle, int power) {
+	
+	
+	
+	/* pseudocode
+
+	
+	while(notInRange(getAngle, angle, 20)) {
+		
+		power = (angle - getAngle()) * some constant; <---- simple P controller
+		motors = checkAngle * power
+		wait1Msec(50);
+	}
+	
+	*/
+}
+
+int inRange(int value, int min, int max) {
+	if( value > max || value < min)
+		return 0;
+	else
+		return 1;
+}
+
+int notInRange(int value, int min, int max) {
+	if( value > max || value < min)
+		return 1;
+	else
+		return 0;
+}
+
+
+
+int checkAngle(int target) {
+	int tAngle = getAngle(ka);
+	if (tAngle > target) 
+		return 1;
+	else if (tAngle < target)
+		return -1;
+	else
+		return 0;
+}
+
+float getAngle() {
+//dLeftF
+//dRightF
+//dLeftB
+//dRightB
+	int offsetL, offsetR;
+
+	//"y=x" diagonal
+	offsetR = (nMotorEncoder[dRightF] - nMotorEncoder[dLeftB]);
+	
+	//"y=-x" diagonal
+	offsetL = (nMotorEncoder[dLeftF] - nMotorEncoder[dRightB]);
+
+	//Need testing to convert offset into angle
+
+	return Ka * (offsetL+offsetR) / 2;
+}
 
 
 
