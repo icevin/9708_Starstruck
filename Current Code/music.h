@@ -1,6 +1,8 @@
 #ifndef musicFUNCTIONS
 #define musicFUNCTIONS
 
+unsigned int beat = 0;
+int musicCtrl = 0;
 	float BPM = 187, delayTime = 160.4278;
 	float quart = delayTime * .2; //In centiseconds
 	float eighth = delayTime * .1;
@@ -22,6 +24,8 @@
 //Array format: {Frequency in hertz, length of note in centiseconds}
 // intro, beforeRepeat, 1, rest, beforeRepeat, 2, rest, beforeRepeat,
 
+
+//STARBOY
 unsigned float intro[71][2] = { //count 0 -> count 70, offset 0}
 
 		{0, sixteenth}, //count = 0
@@ -527,7 +531,7 @@ task music()
 	nSchedulePriority = 8;
 	while(true) {
 		if(musicCtrl == 1) {
-
+		musicCtrl = vexRT[Btn7UXmtr2];
 			if(beat <= 70) {
 				playImmediateTone(intro[beat][0],(intro[beat][1]-3));
 				wait1Msec(intro[beat][1] * 10);

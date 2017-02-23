@@ -68,7 +68,7 @@ task clawControl() {
 
 	while (true)
 	{
-		clawPot = SensorValue(pot);
+		clawPot = SensorValue(potL);
 		pidError = clawPot - clawReq;
 
 		if(pid_Ki!=0) {
