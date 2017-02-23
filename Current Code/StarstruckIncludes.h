@@ -9,6 +9,8 @@ float getAngle(const float Ka);
 int checkAngle(int target);
 int inRange(int value, int min, int max);
 int notInRange(int value, int min, int max);
+int move(int angle, int amount, int power);
+void setDriveMotors(int forwardVector, int rotationVector, int horizontalVector);
 //MOVEMENT FUNCTIONS
 
 const unsigned int linearizeSpeed[128] =
@@ -31,8 +33,6 @@ const unsigned int linearizeSpeed[128] =
 
 
 void rotate(float angle, int power) {
-	
-	
 	
 	/* pseudocode
 
@@ -61,8 +61,6 @@ int notInRange(int value, int min, int max) {
 		return 0;
 }
 
-
-
 int checkAngle(int target) {
 	int tAngle = getAngle(ka);
 	if (tAngle > target) 
@@ -90,6 +88,60 @@ float getAngle() {
 
 	return Ka * (offsetL+offsetR) / 2;
 }
+
+
+
+
+int move(int angle, int amount, int power) { //angle in degrees
+
+	//Calculate motor values
+	int forwardV = sinDegrees(angle) * power;
+	int horizonV = cosDegrees(angle) * power;
+	//while loop for moving & amount
+	
+}
+
+
+
+void setDriveMotors(int forwardVector, int rotationVector, int horizontalVector) {
+	mReqLF = forwardVector + rotationVector + horizontalVector;
+	mReqRF = forwardVector - rotationVector - horizontalVector;
+	mReqLB = forwardVector + rotationVector - horizontalVector;
+	mReqRB = forwardVector - rotationVector + horizontalVector;
+
+	if(abs(mReqLF) > DEADZONE)
+		motor[dLeftF] = linearizeSpeed[mReqLF];
+	else
+		motor[dLeftF] = 0;
+	if(abs(mReqRF) > DEADZONE)
+		motor[dRightF] = linearizeSpeed[mReqRF];
+	else
+		motor[dRightF] = 0;
+	if(abs(mReqLB) > DEADZONE)
+		motor[dLeftB] = linearizeSpeed[mReqLB];
+	else
+		motor[dLeftB] = 0;
+	if(abs(mReqRB) > DEADZONE)
+		motor[dRightB] = linearizeSpeed[mReqRB];
+	else
+		motor[dRightB] = 0;		
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
