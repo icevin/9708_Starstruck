@@ -131,22 +131,22 @@ task control() {
 		mReqRB = forwardVector - rotationVector + horizontalVector;
 
 		if(abs(mReqLF) > DEADZONE)
-			motor[dLeftF] = linearizeSpeed[mReqLF];
+			motor[dLeftF] = trueSpeed(clamp(mReqLF));
 		else
 			motor[dLeftF] = 0;
 
 		if(abs(mReqRF) > DEADZONE)
-			motor[dRightF] = linearizeSpeed[mReqRF];
+			motor[dRightF] = trueSpeed(clamp(mReqRF));
 		else
 			motor[dRightF] = 0;
 
 		if(abs(mReqLB) > DEADZONE)
-			motor[dLeftB] = linearizeSpeed[mReqLB];
+			motor[dLeftB] = trueSpeed(clamp(mReqLB));
 		else
 			motor[dLeftB] = 0;
 
 		if(abs(mReqRB) > DEADZONE)
-			motor[dRightB] = linearizeSpeed[mReqRB];
+			motor[dRightB] = trueSpeed(clamp(mReqRB));
 		else
 			motor[dRightB] = 0;
 

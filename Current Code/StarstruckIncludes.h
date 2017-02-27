@@ -5,7 +5,7 @@
 
 
 void rotate(float angle, int power);
-float getAngle(const float Ka);
+float getAngle();
 int checkAngle(int target);
 int inRange(int value, int min, int max);
 int notInRange(int value, int min, int max);
@@ -30,20 +30,39 @@ const unsigned int linearizeSpeed[128] =
  88, 89, 89, 90, 90,127,127,127
 };
 
+int clamp(int x) {
+	if(x>127) {
+		x = 127;
+	} else if(x< -127) {
+		x = -127;
+	}
+	return x;
+}
 
+int trueSpeed(int x) {
+	int value = linearizeSpeed[abs(x)];
+	if(x>0)
+		return value;
+	else if(x<0)
+		return -value;
+	else
+		return 0;
+
+
+}
 
 void rotate(float angle, int power) {
-	
+
 	/* pseudocode
 
-	
+
 	while(notInRange(getAngle, angle, 20)) {
-		
+
 		power = (angle - getAngle()) * some constant; <---- simple P controller
 		motors = checkAngle * power
 		wait1Msec(50);
 	}
-	
+
 	*/
 }
 
@@ -62,8 +81,8 @@ int notInRange(int value, int min, int max) {
 }
 
 int checkAngle(int target) {
-	int tAngle = getAngle(ka);
-	if (tAngle > target) 
+	int tAngle = getAngle();
+	if (tAngle > target)
 		return 1;
 	else if (tAngle < target)
 		return -1;
@@ -80,7 +99,7 @@ float getAngle() {
 
 	//"y=x" diagonal
 	offsetR = (nMotorEncoder[dRightF] - nMotorEncoder[dLeftB]);
-	
+
 	//"y=-x" diagonal
 	offsetL = (nMotorEncoder[dLeftF] - nMotorEncoder[dRightB]);
 
@@ -98,12 +117,13 @@ int move(int angle, int amount, int power) { //angle in degrees
 	int forwardV = sinDegrees(angle) * power;
 	int horizonV = cosDegrees(angle) * power;
 	//while loop for moving & amount
-	
+
 }
 
 
 
 void setDriveMotors(int forwardVector, int rotationVector, int horizontalVector) {
+	/*
 	mReqLF = forwardVector + rotationVector + horizontalVector;
 	mReqRF = forwardVector - rotationVector - horizontalVector;
 	mReqLB = forwardVector + rotationVector - horizontalVector;
@@ -124,7 +144,8 @@ void setDriveMotors(int forwardVector, int rotationVector, int horizontalVector)
 	if(abs(mReqRB) > DEADZONE)
 		motor[dRightB] = linearizeSpeed[mReqRB];
 	else
-		motor[dRightB] = 0;		
+		motor[dRightB] = 0;
+		*/
 }
 
 
