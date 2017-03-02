@@ -81,7 +81,7 @@ int moveTime(int angle, int time, int power) { //angle in degrees, time in ms
 	wait1Msec(time);
 	setDriveMotors(0, 0, 0);
 }
-	
+
 void rotateTime(int power, int time) {
 	setDriveMotors(0, power, 0);
 	wait1Msec(time);
@@ -95,19 +95,19 @@ void setDriveMotors(int forwardVector, int rotationVector, int horizontalVector)
 	LB = forwardVector + rotationVector - horizontalVector;
 	RB = forwardVector - rotationVector + horizontalVector;
 
-	if(abs(mReqLF) > DEADZONE)
+	if(abs(LF) > DEADZONE)
 		motor[dLeftF] = linearizeSpeed[LF];
 	else
 		motor[dLeftF] = 0;
-	if(abs(mReqRF) > DEADZONE)
+	if(abs(RF) > DEADZONE)
 		motor[dRightF] = linearizeSpeed[RF];
 	else
 		motor[dRightF] = 0;
-	if(abs(mReqLB) > DEADZONE)
+	if(abs(LB) > DEADZONE)
 		motor[dLeftB] = linearizeSpeed[LB];
 	else
 		motor[dLeftB] = 0;
-	if(abs(mReqRB) > DEADZONE)
+	if(abs(RB) > DEADZONE)
 		motor[dRightB] = linearizeSpeed[RB];
 	else
 		motor[dRightB] = 0;
