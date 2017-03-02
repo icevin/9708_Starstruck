@@ -30,6 +30,16 @@ const unsigned int linearizeSpeed[128] =
  88, 89, 89, 90, 90,127,127,127
 };
 
+void returnToSender(){
+/*
+	get ultrasonic value
+	when ultrasonic changes, exec programming skills dump
+
+
+
+*/
+}
+
 int clamp(int x) {
 	if(x>127) {
 		x = 127;
@@ -77,8 +87,6 @@ void rotateTime(int power, int time) {
 	wait1Msec(time);
 	setDriveMotors(0, 0, 0);
 }
-
-
 
 void setDriveMotors(int forwardVector, int rotationVector, int horizontalVector) {
 	int LF, RF, LB, RB;
