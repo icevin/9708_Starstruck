@@ -10,14 +10,14 @@
 int armReq;
 int armCur;
 
-void setArm(int armPower);
+
 
 task armSlewControl() {
 	int diff = 0;
 	while(true) {
 			diff = armReq - armCur;
-			
-			
+
+
 			//Add/subtract ArmCur
 			if(armCur < armReq) {
 				armCur += (0.4*abs(diff));
@@ -25,7 +25,7 @@ task armSlewControl() {
 				armCur -= (0.4*abs(diff));
 			}
 
-			
+
 			//Set arm motors to ArmCur
 			if(armReq == 0) {
 				setArm(0);
@@ -38,13 +38,6 @@ task armSlewControl() {
 			}
 			wait1Msec(LOOPSPEED*3);
 	}
-}
-
-void setArm(int armPower) {
-	motor[armL1] = armPower;
-	motor[armL2] = armPower;
-	motor[armR1] = armPower;
-	motor[armR2] = armPower;
 }
 
 void reqArm(int power) {

@@ -9,8 +9,9 @@ float getAngle();
 int checkAngle(int target);
 int inRange(int value, int min, int max);
 int notInRange(int value, int min, int max);
-int move(int angle, int amount, int power);
+void moveTime(int angle, int time, int power);
 void setDriveMotors(int forwardVector, int rotationVector, int horizontalVector);
+void setArm(int armPower);
 //MOVEMENT FUNCTIONS
 
 const unsigned int linearizeSpeed[128] =
@@ -30,14 +31,28 @@ const unsigned int linearizeSpeed[128] =
  88, 89, 89, 90, 90,127,127,127
 };
 
-void returnToSender(){
-/*
-	get ultrasonic value
-	when ultrasonic changes, exec programming skills dump
+void waitUntilDetectChange(){
+	int initial = SensorValue(clawUltrasonic);
+	while(abs(initial-SensorValue(clawUltrasonic)) < 4) {
+			wait1Msec(100);
+	}
+	return;
+}
 
+void cycle() {		///ASSUMING STARTING FROM FENCE, LIFT DOWN, CLAW OPEN: moves forward, closes claw, moves back, dumps
+	moveTime(0, 1000, 60);
+	motor[clawL] = 60;
+	motor[clawR] = 60;
+	moveTime(180, 500, 60);
+	setArm(120);
+	wait1Msec(1200);
+	motor[clawL] = -60;
+	motor[clawR] = -60;
+	setArm(0);
+	setDriveMotors(0, 0, 0);
+	motor[clawL] = 0;
+	motor[clawR] = 0;
 
-
-*/
 }
 
 int clamp(int x) {
@@ -55,6 +70,8 @@ int trueSpeed(int x) {
 		return value;
 	else if(x<0)
 		return -value;
+	else
+		return 0;
 }
 
 
@@ -73,11 +90,21 @@ int notInRange(int value, int min, int max) {
 		return 0;
 }
 
-int moveTime(int angle, int time, int power) { //angle in degrees, time in ms
+void setArm(int armPower) {
+	motor[armL1] = armPower;
+	motor[armL2] = armPower;
+	motor[armR1] = armPower;
+	motor[armR2] = armPower;
+}
+
+void moveTime(int angle, int time, int power) { //angle in degrees, time in ms
 	//Calculate motor values
-	int forwardV = sinDegrees(angle) * power;
-	int horizonV = cosDegrees(angle) * power;
-	setDriveMotors(forwardV, 0, horizonV);
+	float forwardV = cosDegrees(angle) * power;
+	float horizonV = sinDegrees(angle) * power;
+
+	int forPower = forwardV;
+	int horPower = horizonV;
+	setDriveMotors(forPower, 0, horPower);
 	wait1Msec(time);
 	setDriveMotors(0, 0, 0);
 }
@@ -174,8 +201,7 @@ void rotate(float angle, int power) {
 	*/
 }
 
-int move(int angle, int amount, int power) { //angle in degrees
-
+void move(int angle, int amount, int power) { //angle in degrees
 	//Calculate motor values
 	int forwardV = sinDegrees(angle) * power;
 	int horizonV = cosDegrees(angle) * power;
