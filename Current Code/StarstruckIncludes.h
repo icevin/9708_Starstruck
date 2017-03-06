@@ -28,7 +28,7 @@ const unsigned int linearizeSpeed[128] =
  61, 62, 63, 64, 65, 66, 67, 67, 68, 70,
  71, 72, 72, 73, 74, 76, 77, 78, 79, 79,
  80, 81, 83, 84, 84, 86, 86, 87, 87, 88,
- 88, 89, 89, 90, 90,127,127,127
+ 88, 89, 89, 90, 90, 127, 127, 127
 };
 
 void waitUntilDetectChange(){
@@ -65,7 +65,7 @@ int clamp(int x) {
 }
 
 int trueSpeed(int x) {
-	int value = linearizeSpeed[abs(x)];
+	int value = linearizeSpeed[clamp(abs(x))];
 	if(x>=0)
 		return value;
 	else if(x<0)
@@ -123,19 +123,19 @@ void setDriveMotors(int forwardVector, int rotationVector, int horizontalVector)
 	RB = forwardVector - rotationVector + horizontalVector;
 
 	if(abs(LF) > DEADZONE)
-		motor[dLeftF] = linearizeSpeed[LF];
+		motor[dLeftF] = trueSpeed(clamp(LF));
 	else
 		motor[dLeftF] = 0;
 	if(abs(RF) > DEADZONE)
-		motor[dRightF] = linearizeSpeed[RF];
+		motor[dRightF] = trueSpeed(clamp(RF));
 	else
 		motor[dRightF] = 0;
 	if(abs(LB) > DEADZONE)
-		motor[dLeftB] = linearizeSpeed[LB];
+		motor[dLeftB] = trueSpeed(clamp(LB));
 	else
 		motor[dLeftB] = 0;
 	if(abs(RB) > DEADZONE)
-		motor[dRightB] = linearizeSpeed[RB];
+		motor[dRightB] = trueSpeed(clamp(RB));
 	else
 		motor[dRightB] = 0;
 }

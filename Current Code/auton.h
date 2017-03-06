@@ -1,12 +1,14 @@
 #ifndef AUTON
 #define AUTON
 
-void newKevAuton() {
-
+void newNewAuton() {
 
 	motor[clawL] = -90;		//OPEN CLAW
 	motor[clawR] = -90;
-	wait1Msec(2000);			//WAIT UNTIL OPEN
+while (abs(SensorValue(potL) - CLAW_FULL_CLOSED) < 500)
+{
+	wait1Msec(10);			//WAIT UNTIL OPEN
+}
 	motor[clawL] = 0;			//STOP CLAW
 	motor[clawR] = 0;
 
@@ -64,6 +66,98 @@ void newKevAuton() {
 	motor[clawL] = -90;	//START OPENING CLAW
 	motor[clawR] = -90;
 	wait1Msec(300);
+	motor[armL1] = 0;
+	motor[armL2] = 0;
+	motor[armR1] = 0;
+	motor[armR2] = 0;
+	motor[clawL] = 0;
+	motor[clawR] = 0;
+	motor[dLeftF] = 0;
+	motor[dRightF] = 0;
+	motor[dLeftB] = 0;
+	motor[dRightB] = 0;
+}
+
+void newKevAuton() {
+	motor[clawL] = -60;		//OPEN CLAW
+	motor[clawR] = -60;
+	wait1Msec(1350);			//WAIT UNTIL OPEN
+	motor[clawL] = 0;			//STOP CLAW
+	motor[clawR] = 0;
+
+	wait1Msec(100);
+	setArm(-50);
+	wait1Msec(400);
+	setArm(0);
+
+	motor[dLeftF] = 80;		//DRIVE FORWARDS
+	motor[dRightF] = 80;
+	motor[dLeftB] = 80;
+	motor[dRightB] = 80;
+	wait1Msec(800);				//DRIVE FOR 700MS
+	motor[dLeftF] = 0;		//STOP
+	motor[dRightF] = 0;
+	motor[dLeftB] = 0;
+	motor[dRightB] = 0;
+
+	motor[dLeftF] = -50;	//START ROTATION
+	motor[dRightF] = 50;
+	motor[dLeftB] = -50;
+	motor[dRightB] = 50;
+	wait1Msec(500);				//ROTATE FOR 600MS
+	motor[dLeftF] = 0;		//STOP ROTATION
+	motor[dRightF] = 0;
+	motor[dLeftB] = 0;
+	motor[dRightB] = 0;
+	wait1Msec(100);
+	setArm(-50);
+	wait1Msec(400);
+	setArm(0);
+
+	motor[dLeftF] = 60;		//DRIVE FORWARDS
+	motor[dRightF] = 60;
+	motor[dLeftB] = 60;
+	motor[dRightB] = 60;
+	wait1Msec(800);				//WAIT 700MS
+	motor[clawL] = 70;		//START CLOSING CLAW
+	motor[clawR] = 70;
+	wait1Msec(300);				//WAIT 300MS
+	motor[dLeftF] = 0;		//STOP DRIVING
+	motor[dRightF] = 0;
+	motor[dLeftB] = 0;
+	motor[dRightB] = 0;
+
+	wait1Msec(800);		//WAIT FOR CLAW TO CLOSE/SECURE
+	motor[dLeftF] = -115;	//ROTATE AGAIN
+	motor[dRightF] = 115;
+	motor[dLeftB] = -115;
+	motor[dRightB] = 115;
+
+	wait1Msec(900);
+	motor[dLeftF] = -100;	//START MOVING BACKWARDS
+	motor[dRightF] = -100;
+	motor[dLeftB] = -100;
+	motor[dRightB] = -100;
+
+	wait1Msec(700);			//WAIT 800MS
+	motor[armL1] = 120;		//START DUMPING (still moving backwards)
+	motor[armL2] = 120;
+	motor[armR1] = 120;
+	motor[armR2] = 120;
+//while (SensorValue(armEncoder) > -500)
+//{
+//	wait1Msec(10);		//WAIT UNTIL AT PEAK OF DUMP
+//}
+//	motor[clawL] = -90;	//START OPENING CLAW
+//	motor[clawR] = -90;
+//while (abs(SensorValue(potL) - CLAW_FULL_CLOSED) < 500)
+//{
+//	wait1Msec(10);			//WAIT UNTIL OPEN
+//}
+	wait1Msec(1000);
+		motor[clawL] = -90;	//START OPENING CLAW
+		motor[clawR] = -90;
+	wait1Msec(600);
 	motor[armL1] = 0;
 	motor[armL2] = 0;
 	motor[armR1] = 0;

@@ -19,7 +19,7 @@ void drive(int encoderCounts, int speed)
 {
 	clearEncoders();
 	//While both of the encoders are less than the specified amount
-	while(abs(nMotorEncoder[driveLeftwBack]) < abs(encoderCounts))
+	while(abs(nMotorEncoder[driveLeftBack]) < abs(encoderCounts))
 	{
 		//If the two encoder values are equal
 		if(abs(nMotorEncoder[driveRightBack]) == abs(nMotorEncoder[driveLeftBack]))

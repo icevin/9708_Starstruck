@@ -98,32 +98,34 @@ void pre_auton()
 	bStopTasksBetweenModes = true;
 }
 
-void programSkills()
-{
-
-}
-
-
 task autonomous()
 {
-	newKevAuton();
-
-	setArm(-90);
-	wait1Msec(1150);
+	motor[dLeftF] = -90;	//START MOVING BACKWARDS
+	motor[dRightF] = -90;
+	motor[dLeftB] = -90;
+	motor[dRightB] = -90;
+	wait1Msec(1500);
+	setDriveMotors(0, 0, 0);
+	motor[clawL] = -100;
+	motor[clawR] = -100;
+	wait1Msec(1500);
+	motor[clawL] = 0;
+	motor[clawR] = 0;
+	setArm(-30);
+	wait1Msec(500);
 	setArm(0);
 	setDriveMotors(120, 0, 0);
+	wait1Msec(1700);
+	setDriveMotors(0,0,0);
+	motor[clawL] = 110;
+	motor[clawR] = 110;
 	wait1Msec(1500);
-	motor[clawL] = 120;
-	motor[clawR] = 120;
-	wait1Msec(400);
-	setDriveMotors(-60,0,0);
-	wait1Msec(300);
 	motor[dLeftF] = 0;
 	motor[dRightF] = 0;
 	motor[dLeftB] = 0;
 	motor[dRightB] = 0;
-	motor[clawL] = 60;
-	motor[clawR] = 60;
+	motor[clawL] = 80;
+	motor[clawR] = 80;
 	/*	waitUntilDetectChange();
 	motor[clawL] = 50;
 	motor[clawR] = 50;
@@ -133,12 +135,12 @@ task autonomous()
 	setArm(0);*/
 	//setDriveMotors(-90, 0, 0);
 	//wait1Msec(5000);
-	motor[dLeftF] = -120;	//START MOVING BACKWARDS
-	motor[dRightF] = -120;
-	motor[dLeftB] = -120;
-	motor[dRightB] = -120;
+	motor[dLeftF] = -90;	//START MOVING BACKWARDS
+	motor[dRightF] = -90;
+	motor[dLeftB] = -90;
+	motor[dRightB] = -90;
 
-	wait1Msec(1000);			//WAIT 800MS
+	wait1Msec(2000);			//WAIT 800MS
 	motor[armL1] = 120;		//START DUMPING (still moving backwards)
 	motor[armL2] = 120;
 	motor[armR1] = 120;
@@ -153,10 +155,10 @@ task autonomous()
 	//{
 	//	wait1Msec(10);			//WAIT UNTIL OPEN
 	//}
-	wait1Msec(1000);
+	wait1Msec(1200);
 	motor[clawL] = -90;	//START OPENING CLAW
 	motor[clawR] = -90;
-	wait1Msec(600);
+	wait1Msec(200);
 	motor[armL1] = 0;
 	motor[armL2] = 0;
 	motor[armR1] = 0;
@@ -169,6 +171,192 @@ task autonomous()
 	motor[dRightB] = 0;
 	setDriveMotors(0, 0, 0);
 	//cycle();
+	setArm(-90);
+	motor[clawL] = -90;
+	motor[clawR] = -90;
+	wait1Msec(1250);
+	setArm(0);
+
+
+
+	setDriveMotors(120, 0, 0);
+	wait1Msec(2000);
+	setDriveMotors(0,0,0);
+	motor[clawL] = 90;
+	motor[clawR] = 90;
+	wait1Msec(2000);
+	motor[dLeftF] = 0;
+	motor[dRightF] = 0;
+	motor[dLeftB] = 0;
+	motor[dRightB] = 0;
+	motor[clawL] = 80;
+	motor[clawR] = 80;
+
+
+
+	motor[dLeftF] = -90;	//START MOVING BACKWARDS
+	motor[dRightF] = -90;
+	motor[dLeftB] = -90;
+	motor[dRightB] = -90;
+
+	wait1Msec(2000);			//WAIT 800MS
+	motor[armL1] = 120;		//START DUMPING (still moving backwards)
+	motor[armL2] = 120;
+	motor[armR1] = 120;
+	motor[armR2] = 120;
+
+
+
+
+	wait1Msec(1000);
+	motor[clawL] = -90;	//START OPENING CLAW
+	motor[clawR] = -90;
+	wait1Msec(200);
+	motor[armL1] = 0;
+	motor[armL2] = 0;
+	motor[armR1] = 0;
+	motor[armR2] = 0;
+	motor[clawL] = 0;
+	motor[clawR] = 0;
+	motor[dLeftF] = 0;
+	motor[dRightF] = 0;
+	motor[dLeftB] = 0;
+	motor[dRightB] = 0;
+	setDriveMotors(0, 0, 0);
+
+		setArm(-90);
+	motor[clawL] = -70;
+	motor[clawR] = -70;
+	wait1Msec(1250);
+	setArm(0);
+	setDriveMotors(120, 0, 0);
+	wait1Msec(2000);
+	setDriveMotors(0,0,0);
+	motor[clawL] = 100;
+	motor[clawR] = 100;
+	wait1Msec(2000);
+	motor[dLeftF] = 0;
+	motor[dRightF] = 0;
+	motor[dLeftB] = 0;
+	motor[dRightB] = 0;
+	motor[clawL] = 50;
+	motor[clawR] = 50;
+
+
+
+	motor[dLeftF] = -90;	//START MOVING BACKWARDS
+	motor[dRightF] = -90;
+	motor[dLeftB] = -90;
+	motor[dRightB] = -90;
+
+	wait1Msec(2000);			//WAIT 800MS
+	motor[armL1] = 120;		//START DUMPING (still moving backwards)
+	motor[armL2] = 120;
+	motor[armR1] = 120;
+	motor[armR2] = 120;
+
+
+
+	wait1Msec(1000);
+	motor[clawL] = -90;	//START OPENING CLAW
+	motor[clawR] = -90;
+	wait1Msec(200);
+	motor[armL1] = 0;
+	motor[armL2] = 0;
+	motor[armR1] = 0;
+	motor[armR2] = 0;
+	motor[clawL] = 0;
+	motor[clawR] = 0;
+	motor[dLeftF] = 0;
+	motor[dRightF] = 0;
+	motor[dLeftB] = 0;
+	motor[dRightB] = 0;
+	setDriveMotors(0, 0, 0);
+
+			setArm(-90);
+	motor[clawL] = -70;
+	motor[clawR] = -70;
+	wait1Msec(1250);
+	setArm(0);
+	setDriveMotors(120, 0, 0);
+	wait1Msec(2000);
+		setDriveMotors(0,0,0);
+	motor[clawL] = 100;
+	motor[clawR] = 100;
+	wait1Msec(1500);
+	motor[dLeftF] = 0;
+	motor[dRightF] = 0;
+	motor[dLeftB] = 0;
+	motor[dRightB] = 0;
+	motor[clawL] = 50;
+	motor[clawR] = 50;
+
+
+
+	motor[dLeftF] = -90;	//START MOVING BACKWARDS
+	motor[dRightF] = -90;
+	motor[dLeftB] = -90;
+	motor[dRightB] = -90;
+
+	wait1Msec(2000);			//WAIT 800MS
+	motor[armL1] = 120;		//START DUMPING (still moving backwards)
+	motor[armL2] = 120;
+	motor[armR1] = 120;
+	motor[armR2] = 120;
+
+
+
+	wait1Msec(1000);
+	motor[clawL] = -90;	//START OPENING CLAW
+	motor[clawR] = -90;
+	wait1Msec(200);
+	motor[armL1] = 0;
+	motor[armL2] = 0;
+	motor[armR1] = 0;
+	motor[armR2] = 0;
+	motor[clawL] = 0;
+	motor[clawR] = 0;
+	motor[dLeftF] = 0;
+	motor[dRightF] = 0;
+	motor[dLeftB] = 0;
+	motor[dRightB] = 0;
+	setDriveMotors(0, 0, 0);
+
+	setArm(-90);
+	motor[clawL] = -90;
+	motor[clawR] = -90;
+	wait1Msec(1250);
+	setArm(0);
+	setDriveMotors(90, 0, 0);
+	wait1Msec(1500);
+	setDriveMotors(0, -90, 0);
+	wait1Msec(1000);
+	setDriveMotors(100, 0, 0);
+	motor[clawL] = 90;
+	motor[clawR] = 90;
+	wait1Msec(1000);
+	setDriveMotors(0, 90, 0);
+	wait1Msec(1000);
+
+
+	setDriveMotors(-90, 0, 0);
+	wait1Msec(1500);
+	setArm(120);
+	wait1Msec(1000);
+	motor[clawL] = -90;	//START OPENING CLAW
+	motor[clawR] = -90;
+	wait1Msec(200);
+	motor[armL1] = 0;
+	motor[armL2] = 0;
+	motor[armR1] = 0;
+	motor[armR2] = 0;
+	motor[clawL] = 0;
+	motor[clawR] = 0;
+	motor[dLeftF] = 0;
+	motor[dRightF] = 0;
+	motor[dLeftB] = 0;
+	motor[dRightB] = 0;
+	setDriveMotors(0, 0, 0);
 }
 
 int forwardVector, horizontalVector, rotationVector;
@@ -303,26 +491,19 @@ task control() {
 		motor[armR1]=0;
 		motor[armR2]=0;
 		}
-		*/
-
-		/*if(SensorValue(potL)<900 && vexRT[Btn6DXmtr2]==0)
+		if(SensorValue(potL)<1150 && closeClaw==1)
 		{
-			motor[clawL]=0;
-			motor[clawR]=0;
-		}
-		*/
-		clawValue = openClaw + closeClaw;
-		motor[clawL] = clawValue;
-		motor[clawR] = clawValue;
-
-
-		/**/
+		motor[clawL]=0;
+		motor[clawR]=0;
+		}*/
 		//}if(SensorValue(potL)>3350)
 		//{
 		//	motor[clawL]=50;
 		//	motor[clawR]=50;
 		//}
-
+		clawValue = openClaw + closeClaw;
+		motor[clawL] = clawValue;
+		motor[clawR] = clawValue;
 		//	if (SensorValue(armEncoderL)-initEncoderL<-200 && SensorValue(armEncoderL)-initEncoderL>-500 && SensorValue(potL)<3000)
 		//	{
 		//	motor[clawL]=-127;
