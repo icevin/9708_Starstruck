@@ -9,8 +9,9 @@ float getAngle();
 int checkAngle(int target);
 int inRange(int value, int min, int max);
 int notInRange(int value, int min, int max);
-int move(int angle, int amount, int power);
+void moveTime(int angle, int time, int power);
 void setDriveMotors(int forwardVector, int rotationVector, int horizontalVector);
+void setArm(int armPower);
 //MOVEMENT FUNCTIONS
 
 const unsigned int linearizeSpeed[128] =
@@ -27,8 +28,32 @@ const unsigned int linearizeSpeed[128] =
  61, 62, 63, 64, 65, 66, 67, 67, 68, 70,
  71, 72, 72, 73, 74, 76, 77, 78, 79, 79,
  80, 81, 83, 84, 84, 86, 86, 87, 87, 88,
- 88, 89, 89, 90, 90,127,127,127
+ 88, 89, 89, 90, 90, 127, 127, 127
 };
+
+void waitUntilDetectChange(){
+	int initial = SensorValue(clawUltrasonic);
+	while(abs(initial-SensorValue(clawUltrasonic)) < 4) {
+			wait1Msec(100);
+	}
+	return;
+}
+
+void cycle() {		///ASSUMING STARTING FROM FENCE, LIFT DOWN, CLAW OPEN: moves forward, closes claw, moves back, dumps
+	moveTime(0, 1000, 60);
+	motor[clawL] = 60;
+	motor[clawR] = 60;
+	moveTime(180, 500, 60);
+	setArm(120);
+	wait1Msec(1200);
+	motor[clawL] = -60;
+	motor[clawR] = -60;
+	setArm(0);
+	setDriveMotors(0, 0, 0);
+	motor[clawL] = 0;
+	motor[clawR] = 0;
+
+}
 
 int clamp(int x) {
 	if(x>127) {
@@ -40,31 +65,16 @@ int clamp(int x) {
 }
 
 int trueSpeed(int x) {
-	int value = linearizeSpeed[abs(x)];
-	if(x>0)
+	int value = linearizeSpeed[clamp(abs(x))];
+	if(x>=0)
 		return value;
 	else if(x<0)
 		return -value;
 	else
 		return 0;
-
-
 }
 
-void rotate(float angle, int power) {
 
-	/* pseudocode
-
-
-	while(notInRange(getAngle, angle, 20)) {
-
-		power = (angle - getAngle()) * some constant; <---- simple P controller
-		motors = checkAngle * power
-		wait1Msec(50);
-	}
-
-	*/
-}
 
 int inRange(int value, int min, int max) {
 	if( value > max || value < min)
@@ -79,6 +89,74 @@ int notInRange(int value, int min, int max) {
 	else
 		return 0;
 }
+
+void setArm(int armPower) {
+	motor[armL1] = armPower;
+	motor[armL2] = armPower;
+	motor[armR1] = armPower;
+	motor[armR2] = armPower;
+}
+
+void moveTime(int angle, int time, int power) { //angle in degrees, time in ms
+	//Calculate motor values
+	float forwardV = cosDegrees(angle) * power;
+	float horizonV = sinDegrees(angle) * power;
+
+	int forPower = forwardV;
+	int horPower = horizonV;
+	setDriveMotors(forPower, 0, horPower);
+	wait1Msec(time);
+	setDriveMotors(0, 0, 0);
+}
+
+void rotateTime(int power, int time) {
+	setDriveMotors(0, power, 0);
+	wait1Msec(time);
+	setDriveMotors(0, 0, 0);
+}
+
+void setDriveMotors(int forwardVector, int rotationVector, int horizontalVector) {
+	int LF, RF, LB, RB;
+	LF = forwardVector + rotationVector + horizontalVector;
+	RF = forwardVector - rotationVector - horizontalVector;
+	LB = forwardVector + rotationVector - horizontalVector;
+	RB = forwardVector - rotationVector + horizontalVector;
+
+	if(abs(LF) > DEADZONE)
+		motor[dLeftF] = trueSpeed(clamp(LF));
+	else
+		motor[dLeftF] = 0;
+	if(abs(RF) > DEADZONE)
+		motor[dRightF] = trueSpeed(clamp(RF));
+	else
+		motor[dRightF] = 0;
+	if(abs(LB) > DEADZONE)
+		motor[dLeftB] = trueSpeed(clamp(LB));
+	else
+		motor[dLeftB] = 0;
+	if(abs(RB) > DEADZONE)
+		motor[dRightB] = trueSpeed(clamp(RB));
+	else
+		motor[dRightB] = 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//BROKEN FUNCTIONS (NO DRIVE ENCODERS)
 
 int checkAngle(int target) {
 	int tAngle = getAngle();
@@ -108,70 +186,27 @@ float getAngle() {
 	return Ka * (offsetL+offsetR) / 2;
 }
 
+void rotate(float angle, int power) {
+
+	/* pseudocode
 
 
+	while(notInRange(getAngle, angle, 20)) {
 
-int move(int angle, int amount, int power) { //angle in degrees
+		power = (angle - getAngle()) * some constant; <---- simple P controller
+		motors = checkAngle * power
+		wait1Msec(50);
+	}
 
+	*/
+}
+
+void move(int angle, int amount, int power) { //angle in degrees
 	//Calculate motor values
 	int forwardV = sinDegrees(angle) * power;
 	int horizonV = cosDegrees(angle) * power;
 	//while loop for moving & amount
-
 }
-
-
-
-void setDriveMotors(int forwardVector, int rotationVector, int horizontalVector) {
-	/*
-	mReqLF = forwardVector + rotationVector + horizontalVector;
-	mReqRF = forwardVector - rotationVector - horizontalVector;
-	mReqLB = forwardVector + rotationVector - horizontalVector;
-	mReqRB = forwardVector - rotationVector + horizontalVector;
-
-	if(abs(mReqLF) > DEADZONE)
-		motor[dLeftF] = linearizeSpeed[mReqLF];
-	else
-		motor[dLeftF] = 0;
-	if(abs(mReqRF) > DEADZONE)
-		motor[dRightF] = linearizeSpeed[mReqRF];
-	else
-		motor[dRightF] = 0;
-	if(abs(mReqLB) > DEADZONE)
-		motor[dLeftB] = linearizeSpeed[mReqLB];
-	else
-		motor[dLeftB] = 0;
-	if(abs(mReqRB) > DEADZONE)
-		motor[dRightB] = linearizeSpeed[mReqRB];
-	else
-		motor[dRightB] = 0;
-		*/
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //LEGACY FUNCTIONS
 task OpenClaw() {
@@ -252,6 +287,8 @@ void halfOpenClaw() {
 	motor[clawL] = 0;
 	motor[clawR] = 0;
 }
+
+
 
 void armRotationUser(int r) {
 	int counter=0;
